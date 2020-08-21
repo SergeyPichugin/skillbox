@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <p id="d"></p>
+
+    <script>
+        /* 1. Написать программу, которая выводит текущую дату в полном русскоязычном формате, например: 
+                    “Сегодня 8 декабря 2018 года, суббота, 20 часов 6 минут 54 секунды”. Следует обратить внимание 
+                    на правильные склонения слов “час”, “минута”, “секунда”. 
+
+                    Продвинутый уровень: с помощью стандартной функции setInterval сделать так, чтобы сформированная 
+                    строка с датой и временем отображалась в консоли каждую секунду. */
+
+        function getTimeToSite() { // создание функции отображение даты и времени
+            var paragraph, d, days, mounth, dayWeek, hours, minuts, seconds, dayMonth, dayMounthReplace;
+
+            var paragraph = document.getElementById("d"); // параграф для вывод времени
+            var d = new Date(); // создаем дату
+            var days = ["воскресенье", "понедельник", "вторник", "среда",
+                "четверг", "пятница", "суббота"
+            ]; // массив с днем недели
+            day = d.getDate(); // день недели
+            mounth = d.toLocaleString('default', {
+                month: 'long'
+            }); // название месяца не цифрой            
+            dayWeek = days[d.getDay()]; // день недели на русском из массива выше            
+
+
+            function pluralizer(titles) { // плюрализация
+                const cases = [2, 0, 1, 1, 1, 2];
+                return function(number) {
+                    return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+                }
+            }
+
+            const hoursPlural = pluralizer(['час', 'часа', 'часов']); // плюрализация часов
+            const minutesPlural = pluralizer(['минута', 'минуты', 'минут']); // плюрализация минут
+            const secondsPlural = pluralizer(['секунда', 'секунды', 'секунд']); // плюрализация секунд
+
+            hours = d.getHours(); // текущий час
+            minuts = d.getMinutes(); // текущая минута 
+            seconds = d.getSeconds(); // текущая секунда
+
+            dayMonth = d.toLocaleString('ru', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }); // выводим дату в виде 1 сентября 2019
+            dayMounthReplace = dayMonth.replace(' г.', ''); // убираем " г." 
+
+            paragraph.innerText = `Сегодня ${dayMounthReplace} года, ${dayWeek}, ${hours} ${hoursPlural(hours)} ${minuts} ${minutesPlural(minuts)} ${seconds} ${secondsPlural(seconds)}`; // выводим все в параграф
+        }
+        setInterval(function() { // обновление каждую секунду 1000 милисекунд = 1 сек
+            getTimeToSite();
+        }, 1000);
+    </script>
+
+</body>
+
+</html>

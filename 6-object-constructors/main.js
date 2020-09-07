@@ -1,7 +1,6 @@
 "use strict"
 
-import { User, UserList } from "./lib.js"
-// new User("Sergey", "Pichguin")
+import { UserList } from "./lib.js"
 window.UserList = UserList
-window.User = User
-UserList.add();
+
+UserList.add()
